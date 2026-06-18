@@ -1,6 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState, useRef } from "react";
 
 const AddFood = () => {
+
+  const fileInputRef = useRef(null);
+  
   const [data, setData] = useState({
     name: "",
     description: "",
@@ -25,12 +28,46 @@ const AddFood = () => {
     }));
   };
 
+  const handleSubmit = async(e) => {
+    e.preventDefault(); // stops page reload
+
+    console.log(data);
+
+    const formData =new formData();
+      formData.append('food',JSON.stringify(data));
+      formData.append('file', image);
+
+      try{
+       const response = await axios.post('https://localhost:8080/api/foods', formData, {headers: {"Content-Type": "multipart/formData"}});
+       if(response.status===201){
+          alert('Food Added Succefully');
+
+       }
+      }
+      catch(error){
+        console.log('Error',error);
+        alert('Error Adding Food');
+      }
+
+    // after success → reset form
+    setData({
+      name: "",
+      description: "",
+      category: "",
+      price: "",
+      image: null,
+    });
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   return (
     <div>
       <div className="card shadow-sm p-4 my-2">
         <h3 className="mb-4">Add New Food Item</h3>
 
-        {/* Food Name */}
+        <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label className="form-label">Food Name</label>
           <input
@@ -40,6 +77,7 @@ const AddFood = () => {
             placeholder="e.g. Margherita Pizza"
             onChange={onChangeHandler}
             value={data.name}
+            required
           />
         </div>
 
@@ -53,6 +91,7 @@ const AddFood = () => {
             placeholder="Describe the food item..."
             onChange={onChangeHandler}
             value={data.description}
+            required
           ></textarea>
         </div>
 
@@ -64,6 +103,7 @@ const AddFood = () => {
             className="form-select"
             onChange={onChangeHandler}
             value={data.category}
+            required
           >
             <option value="">Select Category</option>
             <option value="Pizza">Pizza</option>
@@ -84,6 +124,7 @@ const AddFood = () => {
             placeholder="Enter price"
             onChange={onChangeHandler}
             value={data.price}
+            required
           />
         </div>
 
@@ -94,13 +135,15 @@ const AddFood = () => {
             type="file"
             className="form-control"
             onChange={onImageChangeHandler}
+            required
+            ref={fileInputRef}
           />
         </div>
-
-        {/* Button */}
-        <button className="btn btn-primary w-100">
-          Add Food Item
-        </button>
+          
+          <button type="submit" className="btn btn-primary w-100">
+            Add Food Item
+          </button>
+      </form>
       </div>
     </div>
   );
