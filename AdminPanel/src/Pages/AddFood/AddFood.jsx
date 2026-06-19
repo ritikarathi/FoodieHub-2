@@ -1,4 +1,6 @@
 import { useState, useRef } from "react";
+import { addFood } from "../../Services/FoodService";
+import { toast } from "react-toastify";
 
 const AddFood = () => {
 
@@ -33,38 +35,30 @@ const AddFood = () => {
 
     console.log(data);
 
-    const formData =new formData();
-      formData.append('food',JSON.stringify(data));
-      formData.append('file', image);
+      try {
+        await addFood(data, data.image);
 
-      try{
-       const response = await axios.post('https://localhost:8080/api/foods', formData, {headers: {"Content-Type": "multipart/formData"}});
-       if(response.status===201){
-          alert('Food Added Succefully');
+        toast.success("Food Added Successfully");
 
-       }
+        setData({
+            name: "",
+            description: "",
+            category: "",
+            price: "",
+            image: null,
+        });
+
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+          }
+      }catch (error) {
+        toast.error("Error Adding Food");
       }
-      catch(error){
-        console.log('Error',error);
-        alert('Error Adding Food');
-      }
-
-    // after success → reset form
-    setData({
-      name: "",
-      description: "",
-      category: "",
-      price: "",
-      image: null,
-    });
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
+      };
 
   return (
     <div>
-      <div className="card shadow-sm p-4 my-2">
+      <div className="card shadow-sm p-4 my-2 mb-0">
         <h3 className="mb-4">Add New Food Item</h3>
 
         <form onSubmit={handleSubmit}>
@@ -133,6 +127,7 @@ const AddFood = () => {
           <label className="form-label">Food Image</label>
           <input
             type="file"
+            accept="image/*"
             className="form-control"
             onChange={onImageChangeHandler}
             required
