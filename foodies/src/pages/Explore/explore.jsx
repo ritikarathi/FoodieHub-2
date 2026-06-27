@@ -3,7 +3,7 @@
 const explore = () => {
   return (
     <div>
-      
+      explore
     </div>
   )
 }
