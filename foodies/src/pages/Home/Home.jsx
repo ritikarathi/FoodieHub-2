@@ -1,8 +1,11 @@
+import ExploreMenu from "../../components/ExploreMenu/ExploreMenu"
+import Header from "../../components/Header/Header"
 
 const Home = () => {
   return (
-    <div>
-      Home
+    <div className="container-fluid py-0">
+      <Header/>
+      <ExploreMenu/>
     </div>
   )
 }
