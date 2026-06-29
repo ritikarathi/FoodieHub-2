@@ -7,7 +7,7 @@ FoodieHub is a modern full-stack food ordering web application that allows users
 ## 📸 Preview
 
 <p align="center">
-  <img src="assets/homepage.png" alt="FoodieHub Homepage" width="100%">
+  <img src="assets/Homepage.png" alt="FoodieHub Homepage" width="100%">
 </p>
 
 ---
