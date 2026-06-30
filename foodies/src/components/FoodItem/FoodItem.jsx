@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 
 
 const FoodItem = ({ name, description, imageUrl, price, id }) => {
@@ -25,9 +26,9 @@ const FoodItem = ({ name, description, imageUrl, price, id }) => {
             ₹{price}
           </p>
 
-          <button className="btn btn-primary mt-auto">
+          <Link className="btn btn-primary mt-auto" to={`/food/${id}`}>
             View Food
-          </button>
+          </Link>
         </div>
       </div>
     </div>
